@@ -51,29 +51,43 @@ public struct JMSScanningQRCodeUtils {
 
      - returns: Void
      */
-    public static func jm_cameraAuthStatus(success: (()->())?, failure: (()->())?) {
-        if let _ = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) {
-            let status = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+    @MainActor public static func jm_cameraAuthStatus(success: (()->())?, failure: (()->())?) {
+        if let _ = AVCaptureDevice.default(for: .video){
+            let status = AVCaptureDevice.authorizationStatus(for: .video)
+            
+//            switch status {
+//            case .notDetermined:
+
+//            case .authorized:
+//                /// 用户允许当前应用访问相机
+//                success?()
+//            case .denied, .restricted:
+//                /// 用户不允许当前应用访问相机
+//                failure?()
+//            }
             
             switch status {
             case .notDetermined:
-                AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted) in
-                    if granted {
-                        DispatchQueue.main.async {
-                            /// 第一次询问用户允许当前应用访问相机
-                            success?()
+                    AVCaptureDevice.requestAccess(for: .video) { granted in
+                        if granted {
+                            DispatchQueue.main.async {
+                                /// 第一次询问用户允许当前应用访问相机
+                                success?()
+                            }
+                        }else {
+                            /// 第一次询问用户不允许当前应用访问相机
+                            failure?()
                         }
-                    }else {
-                        /// 第一次询问用户不允许当前应用访问相机
-                        failure?()
                     }
-                })
             case .authorized:
                 /// 用户允许当前应用访问相机
                 success?()
             case .denied, .restricted:
                 /// 用户不允许当前应用访问相机
                 failure?()
+                
+            default:
+                break
             }
         }else {
             let alertVC = UIAlertController.init(title: "提示", message: "未检测到您的摄像头, 请在真机上测试", preferredStyle: .alert)
@@ -94,34 +108,31 @@ public struct JMSScanningQRCodeUtils {
      - returns: Void
      */
     public static func jm_albumAuthStatus(success: (()->())?, failure: (()->())?) {
-        if let _ = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) {
+        if let _ = AVCaptureDevice.default(for: .video){
             let status = PHPhotoLibrary.authorizationStatus()
-            
             switch status {
             case .notDetermined:
                 PHPhotoLibrary.requestAuthorization({ (status) in
                     if status == .authorized  {
-                        DispatchQueue.main.async {
-                            /// 第一次询问用户允许当前应用访问相册
+//                        DispatchQueue.main.async {
+                            /// 第一次询问用户允许当前应用访问相机
                             success?()
-                        }
+//                        }
                     }else {
                         /// 第一次询问用户不允许当前应用访问相册
                         failure?()
                     }
                 })
-            case .authorized:
+            case.authorized:
                 /// 用户允许当前应用访问相册
                 success?()
-            case .denied, .restricted:
+            case .denied,.restricted:
                 /// 用户不允许当前应用访问相册
                 failure?()
+            default:
+                break
             }
-        }else {
-            failure?()
         }
-        
     }
 
-    
 }
