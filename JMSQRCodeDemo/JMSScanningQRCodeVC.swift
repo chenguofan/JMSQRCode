@@ -108,7 +108,7 @@ class JMSScanningQRCodeVC: UIViewController, UIImagePickerControllerDelegate, UI
     }
     
     // MARK: - Event Response
-    func changeLightSwitch() {
+    @objc func changeLightSwitch() {
         isOpenLight = !isOpenLight
         
         if (isOpenLight) {
@@ -129,7 +129,7 @@ class JMSScanningQRCodeVC: UIViewController, UIImagePickerControllerDelegate, UI
     }
     
     // MARK: - 相册
-    func handleRightBarButtonAction() {
+    @objc func handleRightBarButtonAction() {
         let imagePicker = UIImagePickerController.init()
         imagePicker.sourceType = .photoLibrary
         imagePicker.delegate = self
@@ -138,7 +138,7 @@ class JMSScanningQRCodeVC: UIViewController, UIImagePickerControllerDelegate, UI
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         self.dismiss(animated: true) { 
-            let result = JMSScanningQRCodeUtils.jm_scanQRCodeFromPhotosAlbum(info[UIImagePickerControllerOriginalImage] as! UIImage)
+            let result = JMSScanningQRCodeUtils.jm_scanQRCodeFromPhotosAlbum(info[UIImagePickerController.InfoKey.originalImage.rawValue] as! UIImage)
             print("扫描结果: %@", result)
 
             self.push(type: .qrCode, result: result)

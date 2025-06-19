@@ -14,7 +14,7 @@ private let kView_Size_H = 40
 class JMQRCodeLoadView : UIView {
     
     private(set) var indicatorView: UIActivityIndicatorView = {
-        let tempView = UIActivityIndicatorView.init(activityIndicatorStyle: .white)
+        let tempView = UIActivityIndicatorView.init(style: .white)
         
         return tempView
     }()

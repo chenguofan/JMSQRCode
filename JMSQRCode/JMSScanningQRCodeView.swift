@@ -178,7 +178,7 @@ public class JMSScanningQRCodeView : UIView, AVCaptureMetadataOutputObjectsDeleg
     }
     
     // MARK: - Private
-    func animateQRLine() {
+    @objc func animateQRLine() {
         UIView.animate(withDuration: qrLineAnimateDuration, animations: { 
             var rect                    = self.qrLineImageView?.frame
             rect?.origin.y              = self.qrLineY
@@ -295,6 +295,7 @@ public class JMSScanningQRCodeView : UIView, AVCaptureMetadataOutputObjectsDeleg
     
 }
 
+@MainActor
 public struct JMScanningQRCodeConfig {
     
     private(set) var device: AVCaptureDevice?
@@ -307,12 +308,31 @@ public struct JMScanningQRCodeConfig {
         qrConfig(qrCodeView: qrCodeView, delegate: delegate)
     }
     
-    public mutating func qrConfig(qrCodeView: JMSScanningQRCodeView, delegate: AVCaptureMetadataOutputObjectsDelegate!) {
+    @MainActor public mutating func qrConfig(qrCodeView: JMSScanningQRCodeView, delegate: AVCaptureMetadataOutputObjectsDelegate!) {
         /// 1.获取摄像头设备
-        device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        device = AVCaptureDevice.default(for: .video)
         
         /// 2.创建输入流
-        input = try! AVCaptureDeviceInput.init(device: self.device)
+//        do {
+//            let input = try AVCaptureDeviceInput(device:device)
+//            // 使用 input 进行后续操作（例如添加到 AVCaptureSession）
+//            // captureSession.addInput(input)
+//        } catch {
+//            print("无法创建 AVCaptureDeviceInput: \(error.localizedDescription)")
+//            // 处理错误：显示提示、禁用相关功能等
+//        }
+        guard let de = device else {
+            return
+        }
+        
+        do {
+            _ = try AVCaptureDeviceInput(device:de)
+            // 使用 input 进行后续操作（例如添加到 AVCaptureSession）
+            // captureSession.addInput(input)
+        } catch {
+            print("无法创建 AVCaptureDeviceInput: \(error.localizedDescription)")
+            // 处理错误：显示提示、禁用相关功能等
+        }
         
         /// 3.创建输出流
         output = AVCaptureMetadataOutput()
@@ -320,22 +340,26 @@ public struct JMScanningQRCodeConfig {
         
         /// 4.创建会话对象
         session = AVCaptureSession()
-        session!.sessionPreset = AVCaptureSessionPresetHigh
+        session!.sessionPreset = .high
         
-        if session!.canAddInput(input) {
-            session!.addInput(input)
+        guard let inPut = input else {
+            return
         }
         
-        if session!.canAddOutput(output) {
-            session!.addOutput(output)
+        if session!.canAddInput(inPut) {
+            session!.addInput(inPut)
+        }
+        
+        if session!.canAddOutput(output!) {
+            session!.addOutput(output!)
         }
         
         /// 5.设置扫码支持的编码格式(如下设置条形码和二维码兼容)
-        output!.metadataObjectTypes = [AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code]
+        output!.metadataObjectTypes = [.qr, .ean13, .ean8, .code128]
         
         /// 6.实例化预览图层
-        preview                             = AVCaptureVideoPreviewLayer.init(session: self.session)
-        preview!.videoGravity               = AVLayerVideoGravityResize
+        preview                             = AVCaptureVideoPreviewLayer.init(session: self.session!)
+        preview!.videoGravity               = AVLayerVideoGravity.resize
         preview!.frame                      = qrCodeView.bounds
         
         qrCodeView.backgroundColor              = .clear
@@ -343,7 +367,7 @@ public struct JMScanningQRCodeConfig {
         
         qrCodeView.superview?.layer.insertSublayer(preview!, at: 0)
         
-        preview!.connection.videoOrientation = videoOrientationFromCurrentDeviceOrientation()
+        preview!.connection?.videoOrientation = videoOrientationFromCurrentDeviceOrientation()
         
         // 7.修正扫描区域
         let viewHeight = qrCodeView.frame.height
@@ -353,7 +377,7 @@ public struct JMScanningQRCodeConfig {
         output!.rectOfInterest = CGRect.init(x: cropRect.origin.y / viewHeight, y: cropRect.origin.x / viewWidth, width: cropRect.size.height / viewHeight, height: cropRect.size.width / viewWidth)
     }
     
-    private func videoOrientationFromCurrentDeviceOrientation() -> AVCaptureVideoOrientation {
+    @MainActor private func videoOrientationFromCurrentDeviceOrientation() -> AVCaptureVideoOrientation {
         let orientation = UIApplication.shared.statusBarOrientation
     
         switch orientation {

@@ -21,7 +21,7 @@ public struct JMSGenerateQRCodeUtils {
      
      - returns: UIImage
      */
-    public static func jms_generateQRCode(string: String, imageSize: CGSize, logoImageName: String = "", logoImageSize: CGSize = .zero) -> UIImage? {
+    @MainActor public static func jms_generateQRCode(string: String, imageSize: CGSize, logoImageName: String = "", logoImageSize: CGSize = .zero) -> UIImage? {
         guard let outputImage = self.outputNormalImage(string: string, imageSize: imageSize) else {
             return nil
         }
@@ -45,7 +45,7 @@ public struct JMSGenerateQRCodeUtils {
      
      - returns: UIImage
      */
-    public static func jms_generateColorQRCode(string: String, imageSize: CGSize, rgbColor: CIColor, bgColor: CIColor = CIColor.init(red: 1, green: 1, blue: 1), logoImageName: String = "", logoImageSize: CGSize = .zero) -> UIImage? {
+    @MainActor public static func jms_generateColorQRCode(string: String, imageSize: CGSize, rgbColor: CIColor, bgColor: CIColor = CIColor.init(red: 1, green: 1, blue: 1), logoImageName: String = "", logoImageSize: CGSize = .zero) -> UIImage? {
         guard let outputImage = self.outputColorImage(string: string, imageSize: imageSize, rgbColor: rgbColor, backgroundColor: bgColor) else {
             return nil
         }
@@ -147,7 +147,7 @@ public struct JMSGenerateQRCodeUtils {
 
      - returns: UIImage
      */
-    private static func createLogoImage(_ image: UIImage, _ imageSize: CGSize, logoImageSize: CGSize = .zero, logoImageName: String = "") -> UIImage {
+    @MainActor private static func createLogoImage(_ image: UIImage, _ imageSize: CGSize, logoImageSize: CGSize = .zero, logoImageName: String = "") -> UIImage {
         if logoImageSize.equalTo(.zero) && logoImageName == "" {
             return image
         }

@@ -17,7 +17,6 @@
 		1A8884DD1E75A9B500D97EA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A8884D41E75A9B500D97EA4 /* Assets.xcassets */; };
 		1A8884DE1E75A9B500D97EA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A8884D51E75A9B500D97EA4 /* LaunchScreen.storyboard */; };
 		1A8884DF1E75A9B500D97EA4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A8884D71E75A9B500D97EA4 /* Main.storyboard */; };
-		1A8884E01E75A9B500D97EA4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1A8884D91E75A9B500D97EA4 /* Info.plist */; };
 		1A8884E21E75A9B500D97EA4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8884DB1E75A9B500D97EA4 /* ViewController.swift */; };
 		1AD2CA481E77CC8B002934E5 /* JMSGenerateQRCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD2CA471E77CC8B002934E5 /* JMSGenerateQRCodeVC.swift */; };
 		1AD2CA4A1E77CEEA002934E5 /* JMSScanningQRCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD2CA491E77CEEA002934E5 /* JMSScanningQRCodeVC.swift */; };
@@ -225,7 +224,6 @@
 				TargetAttributes = {
 					1A88849D1E7590C900D97EA4 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 58SDKF7S9Q;
 						ProvisioningStyle = Automatic;
 					};
 					1A8884B11E7590C900D97EA4 = {
@@ -247,6 +245,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -267,7 +266,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A8884E01E75A9B500D97EA4 /* Info.plist in Resources */,
 				1A8884DF1E75A9B500D97EA4 /* Main.storyboard in Resources */,
 				1A8884DD1E75A9B500D97EA4 /* Assets.xcassets in Resources */,
 				1A8884DE1E75A9B500D97EA4 /* LaunchScreen.storyboard in Resources */,
@@ -455,13 +453,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 58SDKF7S9Q;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = JMSQRCodeDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hgy.test.JMSQRCode;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -469,13 +467,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 58SDKF7S9Q;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = JMSQRCodeDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hgy.test.JMSQRCode;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
