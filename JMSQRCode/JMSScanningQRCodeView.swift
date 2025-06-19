@@ -313,14 +313,6 @@ public struct JMScanningQRCodeConfig {
         device = AVCaptureDevice.default(for: .video)
         
         /// 2.创建输入流
-//        do {
-//            let input = try AVCaptureDeviceInput(device:device)
-//            // 使用 input 进行后续操作（例如添加到 AVCaptureSession）
-//            // captureSession.addInput(input)
-//        } catch {
-//            print("无法创建 AVCaptureDeviceInput: \(error.localizedDescription)")
-//            // 处理错误：显示提示、禁用相关功能等
-//        }
         guard let de = device else {
             return
         }
@@ -379,7 +371,7 @@ public struct JMScanningQRCodeConfig {
     
     @MainActor private func videoOrientationFromCurrentDeviceOrientation() -> AVCaptureVideoOrientation {
         let orientation = UIApplication.shared.statusBarOrientation
-    
+        
         switch orientation {
         case .portrait:
             return .portrait

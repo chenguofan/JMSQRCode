@@ -54,18 +54,6 @@ public struct JMSScanningQRCodeUtils {
     @MainActor public static func jm_cameraAuthStatus(success: (()->())?, failure: (()->())?) {
         if let _ = AVCaptureDevice.default(for: .video){
             let status = AVCaptureDevice.authorizationStatus(for: .video)
-            
-//            switch status {
-//            case .notDetermined:
-
-//            case .authorized:
-//                /// 用户允许当前应用访问相机
-//                success?()
-//            case .denied, .restricted:
-//                /// 用户不允许当前应用访问相机
-//                failure?()
-//            }
-            
             switch status {
             case .notDetermined:
                     AVCaptureDevice.requestAccess(for: .video) { granted in
